@@ -21,17 +21,17 @@
 **Functions**
      
 * __createIntersections__
-* __What it does:__ Splits the input text file generated from the kmlParse function by comma and removes an extra '0.0' and the \n and returns this as an array.
+* __What it does:__ Splits the input text file generated from the kmlParse function by comma and removes an extra '0.0' and the \n and returns this as an array. Rounds and turns the strings into a float, this is to try to get the arrows to begin where the previous arrow ended. This solution has made the problem better but not completely solved it.
 
 ###addRouteToMap.py
   **Functions**
 
   * __addRoute__
     * __What it does:__  Takes in a dictionary (mapOfNodes), an array of intersections, and an array of points returned from google maps directions. For the points in the directions it checks if the points match an intersection, if it doesn't match it checks if it is in the dictionary already (the rest of this isnt finished) if it is not already in the dictionary then it adds an entry using the node as a key and the previous node as a value. If it matches an entry in the dictionary then it is removed from the array of intersections and then repeats the same as above and returns the mapOfNodes
-    * __Future:__ I think once this is called many times we will run into an issue since the intersection is being removed and if the point google maps is not returned as exactly the intersection then many unnecessary entries will be created. The point of removing the intersection is to have less calls to directions, this might be able to be solved by creating a 'master' list of intersections and a list of intersections to make calls to google directions with.
+    * __Future:__ There is a place that currently has a print statements that says 'not done yet' this portion will need to be written to incorporate multiple direction calls. If they already exist in the mapOfNodes go through and update the value (in the future maybe update colors). 
   * __interExist__
     * __What it does:__  It is a helper function to addRoute and it checks to see if the point matches an intersection with .0001101 accuracy, if it does it edits the intersection by converting the latlng to a float and rounding it in attempt to fix the crooked arrows that were being generated. If there was an intersection match it returns the intersection if not it returns false   
-* **Future** Change it so that when the nodes are created they are not strings but floats 
+* **Future**  
 
 
 ###dirProject.py

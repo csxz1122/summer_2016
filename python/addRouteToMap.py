@@ -13,20 +13,16 @@ def addRoute (mapOfNodes, intersection, directionIntersection, points):
 		point_node = intersectionParse.Node([point[1],point[0]])
 		result = interExist(point, intersection)
 		if(result == False):
-			if(point_node in mapOfNodes):
-				print('not done yet')
-				break 
-			else:
-				mapOfNodes[point_node] = previous_node
-				previous_node = point_node
+			result = point_node
 		else:
 			directionIntersection.remove(result)
-			if(result in mapOfNodes):
-				print('not done yet')
-				break 
-			else:
-				mapOfNodes[result] = previous_node
-				previous_node = point_node
+	
+		if(result in mapOfNodes):
+			print('not done yet')
+			break 
+		else:
+			mapOfNodes[result] = previous_node
+			previous_node = point_node
 	return mapOfNodes
 def interExist(point, intersection):
 	for inter in intersection:
