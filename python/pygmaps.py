@@ -37,7 +37,7 @@ class maps:
     
     #create the html file which inlcude one google map and all points and paths
     def draw(self, htmlfile):
-        f = open(htmlfile,'w')
+        f = htmlfile
         f.write('<html>\n')
         f.write('<head>\n')
         f.write('<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />\n')
@@ -153,16 +153,13 @@ class maps:
             strokeOpacity = 1.0,\
             strokeWeight = 1
             ):
-        print('path0')
-        print(path[0].latlng)
-        print('path1')
-        print(path[1].latlng)
         f.write('lineSymbol = {\n')
         f.write('path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW\n')
         f.write('};\n')
         f.write('var PolylineCoordinates = [\n')
         for coordinate in path:
-            f.write('new google.maps.LatLng(%f, %f),\n' % (float(coordinate.latlng[1]),float(coordinate.latlng[0])))
+            print("Coordinate", coordinate.lng, coordinate.lat)
+            f.write('new google.maps.LatLng(%f, %f),\n' % (float(coordinate.lng),float(coordinate.lat)))
         f.write('];\n')
         f.write('\n')
 

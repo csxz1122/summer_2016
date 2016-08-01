@@ -1,20 +1,38 @@
+#!/usr/bin/env python3
+
+import argparse
+import math
+from functools import total_ordering
+
+@total_ordering
 class Node():
-	def __init__(self,  latlng):
-		self.color = 'yellow'
-		self.distance = 0
-		self.latlng = latlng
-		self.value = 8
+    def __init__(self,  lat, lng):
+        self.color = 'yellow'
+        self.distance = 0
+        self.lat = round(float(lat),5)
+        self.lng = round(float(lng),5)
+        self.value = 8
+
+    def __eq__(self, other):
+        return (self.lat == other.lat) and (self.lng == other.lng)
+    def __lt__(self, other):
+        if this.lat != other.lat: return self.lat < other.lat
+        else: return self.lng < other.lng
+    def __hash__(self): 
+        return (self.lat,self.lng).__hash__()
+    def __sub__(this, other):
+#        print(this.lat, other.lat, this.lng, other.lng)
+        
+        d_lat = (this.lat - other.lat) ** 2
+        d_lng = (this.lng - other.lng) ** 2
+        return math.sqrt(d_lat + d_lng)
 
 def createIntersections(file):
-	intersection = []
-	intersectionsTxt = open(file)
-	for line in intersectionsTxt:
-		intersection.append(line)
+    def createNode(line):
+        # Drop the last element (why?)
+        lat, lng = line.strip().split(',')[:-1]
+        return Node(lat,lng)
 
-	for i,intersec in enumerate(intersection):
-		intersec = intersec.split(',')
-		intersec.remove('0.0\n')
-		intersection[i] = Node(intersec)
-		intersection[i].latlng[0] = round(float(intersection[i].latlng[0]),5)
-		intersection[i].latlng[1] = round(float(intersection[i].latlng[1]),5)
-	return intersection
+    return list(map(createNode, open(file).readlines()))
+
+    
