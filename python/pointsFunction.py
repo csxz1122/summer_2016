@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 def kmlParse(kml):
 	tree = ET.parse(kml)
 	root = tree.getroot()
-	file = open('/Users/cssummer16/Desktop/summer_2016/python/out.txt', 'w')
+	file = open('/Users/cssummer16/Desktop/summer_2016/readme/python/out.txt', 'w')
 	for x in root.findall(".//Placemark"):
 		file.write(x.find("Point/coordinates").text + '\n')
 	file.close()

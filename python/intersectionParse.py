@@ -15,4 +15,6 @@ def createIntersections(file):
 		intersec = intersec.split(',')
 		intersec.remove('0.0\n')
 		intersection[i] = Node(intersec)
+		intersection[i].latlng[0] = round(float(intersection[i].latlng[0]),5)
+		intersection[i].latlng[1] = round(float(intersection[i].latlng[1]),5)
 	return intersection

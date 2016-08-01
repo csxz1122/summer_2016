@@ -2,13 +2,14 @@ import googlemaps, json, os, polyline, webbrowser
 import addRouteToMap, pointsFunction, intersectionParse, pygmaps
 
 
-kml_file = '/Users/cssummer16/Desktop/summer_2016/python/KML/IntersectionPoints.kml'
+kml_file = '/Users/cssummer16/Desktop/summer_2016/readme/python/KML/IntersectionPoints.kml'
 # API key 
 gmaps = googlemaps.Client(key='AIzaSyDaPfA_TUTlbHLDH0K48qS-Jh2ETfCTz_0')
 text_file=pointsFunction.kmlParse(kml_file)
 intersection = []
 mapOfNodes = {}
 intersection=intersectionParse.createIntersections(text_file)
+directionIntersection = intersection
 
 # The Map
 THE_MAP = None
@@ -19,7 +20,7 @@ MAP_ZOOM = 15
 
 count = 0
 def callDirections():
-	start = [intersection[count].latlng[1], intersection[count].latlng[0]]
+	start = [directionIntersection[count].latlng[1], directionIntersection[count].latlng[0]]
 	end   = [34.10185, -117.71747]
 
 	#making a call to the google maps api 
@@ -28,7 +29,7 @@ def callDirections():
 	points =dirs[0]["overview_polyline"]["points"]
 	# the distance of the route will possibly be helpful in the future if I am changing the colors of the arrows 
 	distance = dirs[0]["legs"][0]["distance"]["value"]
-	addRouteToMap.addRoute(mapOfNodes,intersection, points)
+	addRouteToMap.addRoute(mapOfNodes,intersection, directionIntersection, points)
 
 
 
