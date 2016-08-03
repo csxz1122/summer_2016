@@ -1,13 +1,14 @@
 import polyline, math
 import intersectionParse, dirProject
 
-THRESHOLD = .0001101
-THRESHOLD = 0.0001
+# THRESHOLD = .0001101
+THRESHOLD = 0.00015
 
 # school = intersectionParse.Node([-117.71747, 34.10185,]) 
 def addRoute (intersection, directionIntersection, points):
     mapOfNodes = {}
     close_intersections = []
+    missing_intersection = []
     school = intersectionParse.Node(-117.71747, 34.10185)
     previous_node = points[0]
 
@@ -15,18 +16,26 @@ def addRoute (intersection, directionIntersection, points):
         if point_node in directionIntersection:
             directionIntersection.remove(point_node)
         #mapOfNodes[previous_node] = point_node
-        # print("Point_node, and Previous_node:", point_node.lat, previous_node.lat)
+
         distance_lat = abs(point_node.lat - previous_node.lat)
         distance_lng = abs(point_node.lng - previous_node.lng)
+
         if  distance_lat >.00350 or distance_lng >.00350:
             radius = (point_node - previous_node)/2
-            midpoint = intersectionParse.Node((min(point_node.lng, previous_node.lng) + distance_lng)/2, (min(point_node.lat, previous_node.lat) + distance_lat)/2)
-            close_intersections = [inter for inter in intersection if inter - midpoint <= radius]
-             
-            # Find intersections that are within the radius at the midpoint of two points
-            # Sort
-            # find the distance using projection of a line 
-        # print('here')
+            midpoint = intersectionParse.Node((min(point_node.lat, previous_node.lat) + distance_lat), (min(point_node.lng, previous_node.lng) + distance_lng))
+            
+            close_intersections = [inter for inter in intersection if (inter - midpoint) <= radius]
+            missing_intersection = getSpPoint(point_node, previous_node, close_intersections)
+            for inter in missing_intersection:
+                print(inter.lat, inter.lng)
+
+            distances = [(previous_node-inter, inter) for inter in missing_intersection]
+            distances.sort()
+
+            for inter in distances:
+                mapOfNodes[inter[1]] = previous_node
+                previous_node = inter[1]
+
 
         mapOfNodes[point_node] = previous_node
         previous_node = point_node
@@ -40,9 +49,36 @@ def interExist(point, intersection):
     distances.sort()
 
     best_distance, best_node = distances[0]
+    # print(best_distance)
     
     if best_distance < THRESHOLD:
         return best_node
     else:
-        return point     
+        return point
+
+def getSpPoint(A,B,close_intersections):
+    missing_intersection = []
+    for C in close_intersections:
+        x1 = A.lat
+        y1 = A.lng
+        x2 = B.lat
+        y2 = B.lng
+        x3 = C.lat
+        y3 = C.lng
+        px = x2-x1
+        py = y2-y1 
+        dAB = px*px + py*py
+        u = ((x3 - x1) * px + (y3 -y1) * py) /dAB
+        x = x1 +u * px
+        y = y1 + u * py 
+
+        currNode = intersectionParse.Node(x,y)
+        
+        if currNode - C < THRESHOLD:
+            missing_intersection.append(currNode)
+    return missing_intersection
+
+
+
+
 

@@ -29,6 +29,7 @@ class maps:
 
     def addradpoint(self, lat,lng,rad,color = '#0000FF'):
         self.radpoints.append((lat,lng,rad,color))
+        print('here')
 
     def addpath(self,path,weightInput,color = '#FF0000'):
         path.append(color)
@@ -88,6 +89,7 @@ class maps:
     def drawradpoints(self, f):
         for rpoint in self.radpoints:
             path = self.getcycle(rpoint[0:3])
+            # print("Path:", path)
             self.drawPolygon(f,path,strokeColor = rpoint[3])
 
     def getcycle(self,rpoint):
@@ -113,10 +115,10 @@ class maps:
             #print path
             weightTemp= weight[self.count]/2
             self.count += 1
-            print('weight')
-            print(weightTemp)
-            print('count')
-            print(self.count)
+            # print('weight')
+            # print(weightTemp)
+            # print('count')
+            # print(self.count)
             self.drawPolyline(f,path[:-1], strokeColor = path[-1], strokeWeight = weightTemp)
 
     #############################################
@@ -158,7 +160,7 @@ class maps:
         f.write('};\n')
         f.write('var PolylineCoordinates = [\n')
         for coordinate in path:
-            print("Coordinate", coordinate.lng, coordinate.lat)
+            # print("Coordinate", coordinate.lng, coordinate.lat)
             f.write('new google.maps.LatLng(%f, %f),\n' % (float(coordinate.lng),float(coordinate.lat)))
         f.write('];\n')
         f.write('\n')

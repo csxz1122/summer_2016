@@ -38,7 +38,7 @@ def main(kml_file, html_file, text_file):
     
     for key in mapOfNodes:
         if(mapOfNodes[key] is not None):
-            print("Map leg: ", mapOfNodes[key], key)
+            # print("Map leg: ", mapOfNodes[key], key)
             #THE_MAP.addpath([key, mapOfNodes[key]], key.value)
             THE_MAP.addpath([mapOfNodes[key], key], key.value)
             
