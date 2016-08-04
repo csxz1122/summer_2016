@@ -19,15 +19,12 @@ def addRoute (intersection, directionIntersection, points):
 
         distance_lat = abs(point_node.lat - previous_node.lat)
         distance_lng = abs(point_node.lng - previous_node.lng)
-
+        
         if  distance_lat >.00350 or distance_lng >.00350:
             radius = (point_node - previous_node)/2
-            midpoint = intersectionParse.Node((min(point_node.lat, previous_node.lat) + distance_lat), (min(point_node.lng, previous_node.lng) + distance_lng))
-            
+            midpoint = intersectionParse.Node((min(point_node.lat, previous_node.lat) + distance_lat/2), (min(point_node.lng, previous_node.lng) + distance_lng/2))
             close_intersections = [inter for inter in intersection if (inter - midpoint) <= radius]
             missing_intersection = getSpPoint(point_node, previous_node, close_intersections)
-            for inter in missing_intersection:
-                print(inter.lat, inter.lng)
 
             distances = [(previous_node-inter, inter) for inter in missing_intersection]
             distances.sort()
@@ -49,7 +46,6 @@ def interExist(point, intersection):
     distances.sort()
 
     best_distance, best_node = distances[0]
-    # print(best_distance)
     
     if best_distance < THRESHOLD:
         return best_node
