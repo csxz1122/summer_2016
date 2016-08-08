@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import googlemaps, json, os, polyline, webbrowser
+import googlemaps, json, os, polyline, webbrowser, time, copy
 import addRouteToMap, pointsFunction, intersectionParse, pygmaps
 import argparse
 
@@ -16,26 +16,37 @@ def main(kml_file, html_file, text_file):
     # API key 
     gmaps = googlemaps.Client(key='AIzaSyDaPfA_TUTlbHLDH0K48qS-Jh2ETfCTz_0')
     intersection_file = pointsFunction.kmlParse(kml_file,text_file)
-    intersection=intersectionParse.createIntersections(intersection_file)
+    intersections=intersectionParse.createIntersections(intersection_file)
 
-    directionIntersection = intersection
-
+    mapOfNodes = {}
+    directionIntersections = intersections
+    # directionIntersections = copy.deepcopy(intersections)
+    i = 0
     # the school **look into changing it into the school logo*** add polygone here ***
 
-    start = [directionIntersection[0].lng, directionIntersection[0].lat]
-    end   = [34.10185, -117.71747]
+    while(directionIntersections):
+        temp_node = directionIntersections.pop()
+        start = [temp_node.lng, temp_node.lat]
+        
+        end   = [34.10185, -117.71747]
 
-    #making a call to the google maps api
-    dirs = gmaps.directions(start, end, "walking")
-    #points = dirs[0]["overview_polyline"]["points"]
+        #making a call to the google maps api
+        dirs = gmaps.directions(start, end, "walking")
+        #points = dirs[0]["overview_polyline"]["points"]
 
-    points = [intersectionParse.Node(lng, lat) for lat, lng in polyline.decode(dirs[0]["overview_polyline"]["points"])]
-    # the distance of the route will possibly be helpful in the future if I am changing the colors of the arrows
-    
-    points = addRouteToMap.snapToIntersection(points, intersection)
+        points = [intersectionParse.Node(lng, lat) for lat, lng in polyline.decode(dirs[0]["overview_polyline"]["points"])]
+        # the distance of the route will possibly be helpful in the future if I am changing the colors of the arrows
+        
+        points = addRouteToMap.snapToIntersection(points, intersections)
 
-    mapOfNodes = addRouteToMap.addRoute(intersection, directionIntersection, points)
-    
+        mapOfNodes = addRouteToMap.addRoute(mapOfNodes, intersections, directionIntersections, points)
+
+        i += 1
+        if i >10: 
+            # time.sleep(.5)
+            i =0
+            break
+
     for key in mapOfNodes:
         if(mapOfNodes[key] is not None):
             # print("Map leg: ", mapOfNodes[key], key)

@@ -2,11 +2,10 @@ import polyline, math
 import intersectionParse, dirProject
 
 # THRESHOLD = .0001101
-THRESHOLD = 0.00015
+THRESHOLD = 0.0002
 
 # school = intersectionParse.Node([-117.71747, 34.10185,]) 
-def addRoute (intersection, directionIntersection, points):
-    mapOfNodes = {}
+def addRoute (mapOfNodes, intersection, directionIntersection, points):
     close_intersections = []
     missing_intersection = []
     school = intersectionParse.Node(-117.71747, 34.10185)
@@ -15,27 +14,37 @@ def addRoute (intersection, directionIntersection, points):
     for point_node in points[1:]:
         if point_node in directionIntersection:
             directionIntersection.remove(point_node)
+
         #mapOfNodes[previous_node] = point_node
+        if point_node in mapOfNodes:
+            # Place holder for where there should already be direction to the school
+            print('here, place holder for nodes already in mapOfNodes')
+            break 
 
         distance_lat = abs(point_node.lat - previous_node.lat)
         distance_lng = abs(point_node.lng - previous_node.lng)
+
+        print(distance_lat)
+        print(distance_lng)
         
-        if  distance_lat >.00350 or distance_lng >.00350:
+        if  distance_lat >.00200 or distance_lng >.00200:
             radius = (point_node - previous_node)/2
             midpoint = intersectionParse.Node((min(point_node.lat, previous_node.lat) + distance_lat/2), (min(point_node.lng, previous_node.lng) + distance_lng/2))
             close_intersections = [inter for inter in intersection if (inter - midpoint) <= radius]
             missing_intersection = getSpPoint(point_node, previous_node, close_intersections)
 
             distances = [(previous_node-inter, inter) for inter in missing_intersection]
+
             distances.sort()
 
             for inter in distances:
                 mapOfNodes[inter[1]] = previous_node
                 previous_node = inter[1]
+        if point_node != previous_node:
+            mapOfNodes[point_node] = previous_node
 
-
-        mapOfNodes[point_node] = previous_node
         previous_node = point_node
+
     return mapOfNodes
 
 def snapToIntersection(points, intersection):

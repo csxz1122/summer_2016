@@ -16,7 +16,7 @@ class Node():
     def __eq__(self, other):
         return (self.lat == other.lat) and (self.lng == other.lng)
     def __lt__(self, other):
-        if this.lat != other.lat: return self.lat < other.lat
+        if self.lat != other.lat: return self.lat < other.lat
         else: return self.lng < other.lng
     def __hash__(self): 
         return (self.lat,self.lng).__hash__()
@@ -29,7 +29,7 @@ class Node():
 
 def createIntersections(file):
     def createNode(line):
-        # Drop the last element (why?)
+        # Drop the last element (why is this 0.0 there to begin with?)
         lat, lng = line.strip().split(',')[:-1]
         return Node(lat,lng)
 
