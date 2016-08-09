@@ -15,12 +15,14 @@ THE_MAP = pygmaps.maps(LAT, LNG, MAP_ZOOM)
 def main(kml_file, html_file, text_file):
     # API key 
     gmaps = googlemaps.Client(key='AIzaSyDaPfA_TUTlbHLDH0K48qS-Jh2ETfCTz_0')
+    #for debugging
+    colors = ['#000000','#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF']
     intersection_file = pointsFunction.kmlParse(kml_file,text_file)
     intersections=intersectionParse.createIntersections(intersection_file)
 
     mapOfNodes = {}
-    directionIntersections = intersections
-    # directionIntersections = copy.deepcopy(intersections)
+    # directionIntersections = intersections
+    directionIntersections = copy.deepcopy(intersections)
     i = 0
     # the school **look into changing it into the school logo*** add polygone here ***
 
@@ -36,22 +38,25 @@ def main(kml_file, html_file, text_file):
 
         points = [intersectionParse.Node(lng, lat) for lat, lng in polyline.decode(dirs[0]["overview_polyline"]["points"])]
         # the distance of the route will possibly be helpful in the future if I am changing the colors of the arrows
-        
         points = addRouteToMap.snapToIntersection(points, intersections)
 
         mapOfNodes = addRouteToMap.addRoute(mapOfNodes, intersections, directionIntersections, points)
 
         i += 1
-        if i >10: 
+        if i >1: 
             # time.sleep(.5)
             i =0
             break
-
+    color_count = 0
     for key in mapOfNodes:
         if(mapOfNodes[key] is not None):
-            # print("Map leg: ", mapOfNodes[key], key)
+            print("Map leg: ", mapOfNodes[key], key)
             #THE_MAP.addpath([key, mapOfNodes[key]], key.value)
-            THE_MAP.addpath([mapOfNodes[key], key], key.value)
+            THE_MAP.addpath([mapOfNodes[key], key], key.value, colors[color_count])
+            color_count +=1
+            if color_count == 6:
+                color_count = 0
+
             
     THE_MAP.addpoint(34.10185, -117.71747, "#FF0000")
 

@@ -20,12 +20,14 @@ class Node():
         else: return self.lng < other.lng
     def __hash__(self): 
         return (self.lat,self.lng).__hash__()
-    def __sub__(this, other):
+    def __sub__(self, other):
 #        print(this.lat, other.lat, this.lng, other.lng)
         
-        d_lat = (this.lat - other.lat) ** 2
-        d_lng = (this.lng - other.lng) ** 2
+        d_lat = (self.lat - other.lat) ** 2
+        d_lng = (self.lng - other.lng) ** 2
         return math.sqrt(d_lat + d_lng)
+    def __deepcopy__(self, memo):
+         return(Node(self.lat, self.lng))
 
 def createIntersections(file):
     def createNode(line):
