@@ -43,7 +43,7 @@ def main(kml_file, html_file, text_file):
         mapOfNodes = addRouteToMap.addRoute(mapOfNodes, intersections, directionIntersections, points)
 
         i += 1
-        if i >1: 
+        if i >20: 
             # time.sleep(.5)
             i =0
             break
@@ -51,8 +51,10 @@ def main(kml_file, html_file, text_file):
     for key in mapOfNodes:
         if(mapOfNodes[key] is not None):
             print("Map leg: ", mapOfNodes[key], key)
-            #THE_MAP.addpath([key, mapOfNodes[key]], key.value)
-            THE_MAP.addpath([mapOfNodes[key], key], key.value, colors[color_count])
+            print(key.lat, key.lng)
+            print(mapOfNodes[key].lat, mapOfNodes[key].lng)
+            THE_MAP.addpath([key, mapOfNodes[key]], key.value, colors[color_count])
+            # THE_MAP.addpath([mapOfNodes[key], key], key.value, colors[color_count])
             color_count +=1
             if color_count == 6:
                 color_count = 0

@@ -18,14 +18,14 @@ def addRoute (mapOfNodes, intersections, directionIntersection, points):
         #mapOfNodes[previous_node] = point_node
         if point_node in mapOfNodes:
             # Place holder for where there should already be direction to the school
-            mapOfNodes[point_node] = previous_node
+            mapOfNodes[previous_node] = point_node
             print('here, place holder for nodes already in mapOfNodes')
             break 
 
         distance_lat = abs(point_node.lat - previous_node.lat)
         distance_lng = abs(point_node.lng - previous_node.lng)
         
-        if  distance_lat >.00200 or distance_lng >.00200:
+        if  distance_lat >.00050 or distance_lng >.00050:
             radius = (point_node - previous_node)/2
             midpoint = intersectionParse.Node((min(point_node.lat, previous_node.lat) + distance_lat/2), (min(point_node.lng, previous_node.lng) + distance_lng/2))
 
@@ -38,15 +38,13 @@ def addRoute (mapOfNodes, intersections, directionIntersection, points):
 
             for inter in distances:
                 if inter[1] != previous_node:
-                    mapOfNodes[inter[1]] = previous_node
+                    mapOfNodes[previous_node] = inter[1]
                     previous_node = inter[1]
-                    print("HERE point_node", inter[1], "HERE previous_node", previous_node)
         if point_node != previous_node:
-            mapOfNodes[point_node] = previous_node
-            print("THERE point_node", point_node, "THERE previous_node", previous_node)
+            mapOfNodes[previous_node] = point_node
 
         previous_node = point_node
-
+    print("done with path")
     return mapOfNodes
 
 def snapToIntersection(points, intersections):
@@ -59,11 +57,14 @@ def interExist(point, intersections):
     best_distance, best_node = distances[0]
     
     if best_distance < THRESHOLD:
+        print("node")
         return best_node
     else:
+        print("point")
         return point
 
 def getSpPoint(A,B,close_intersections):
+    print("In get SP point")
     missing_intersection = []
     for C in close_intersections:
         x1 = A.lat
