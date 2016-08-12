@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="css/dP.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <title>Directions service</title>
+  </head>
+  <body>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaPfA_TUTlbHLDH0K48qS-Jh2ETfCTz_0&v=3&libraries=places"></script> -->
+  <div id="floating-panel">
+  <b>Start: </b>
+  <select id="start">
+    <option value="chicago, il">Chicago</option>
+    <option value="st louis, mo">St Louis</option>
+    <option value="joplin, mo">Joplin, MO</option>
+    <option value="oklahoma city, ok">Oklahoma City</option>
+    <option value="amarillo, tx">Amarillo</option>
+    <option value="gallup, nm">Gallup, NM</option>
+    <option value="flagstaff, az">Flagstaff, AZ</option>
+    <option value="winona, az">Winona</option>
+    <option value="kingman, az">Kingman</option>
+    <option value="barstow, ca">Barstow</option>
+    <option value="san bernardino, ca">San Bernardino</option>
+    <option value="los angeles, ca">Los Angeles</option>
+  </select>
+  <b>End: </b>
+  <select id="end">
+    <option value="chicago, il">Chicago</option>
+    <option value="st louis, mo">St Louis</option>
+    <option value="joplin, mo">Joplin, MO</option>
+    <option value="oklahoma city, ok">Oklahoma City</option>
+    <option value="amarillo, tx">Amarillo</option>
+    <option value="gallup, nm">Gallup, NM</option>
+    <option value="flagstaff, az">Flagstaff, AZ</option>
+    <option value="winona, az">Winona</option>
+    <option value="kingman, az">Kingman</option>
+    <option value="barstow, ca">Barstow</option>
+    <option value="san bernardino, ca">San Bernardino</option>
+    <option value="los angeles, ca">Los Angeles</option>
+  </select>
+  </div>
+  <div id="map"></div>
+  <script type="text/javascript" src="js/directionProject.js"></script>
+  <!-- Replace the value of the key parameter with your own API key. -->
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaPfA_TUTlbHLDH0K48qS-Jh2ETfCTz_0&callback=initMap">
+  </script> 
+  </body>
+</html>
