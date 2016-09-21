@@ -18,14 +18,23 @@ class maps:
         self.gridsetting = None
         self.coloricon = 'http://chart.apis.google.com/chart?cht=mm&chs=12x16&chco=FFFFFF,XXXXXX,000000&ext=.png'
 
+    ########## FUNCTION: setgrids(start-Lat, end-Lat, Lat-interval, start-Lng, end-Lng, Lng-interval) ######
+    # DESC:        set grids on map  
+    # slat:    start-Lat (float), start (minimum) latittude of the grids
+    # elat:    end-Lat (float), end (maximum) latittude of the grids
+    # latin:    Lat-interval (float)  grid size in latitude 
+    # slng:    start-Lng (float), start (minimum) longitude of the grids
+    # elng:    end-Lng (float), end (maximum) longitude of the grids
+    # lngin:    Lng-interval (float)  grid size in longitude 
     def setgrids(self,slat,elat,latin,slng,elng,lngin):
         self.gridsetting = [slat,elat,latin,slng,elng,lngin]
-
+        
+    #add a point into a map and dispaly it, color is optional default is red
     def addpoint(self, lat, lng, color = '#FF0000', title = None):
         self.points.append((lat,lng,color[1:],title))
 
-    #def addpointcoord(self, coord):
-    #    self.points.append((coord[0],coord[1]))
+    def addpointcoord(self, coord):
+        self.points.append((coord[0],coord[1]))
 
     def addradpoint(self, lat,lng,rad,color = '#0000FF'):
         self.radpoints.append((lat,lng,rad,color))
@@ -82,6 +91,7 @@ class maps:
         
         for line in self.grids:
             self.drawPolyline(f,line,strokeColor = "#000000")
+    
     def drawpoints(self,f):
         for point in  self.points:
             self.drawpoint(f,point[0],point[1],point[2],point[3])
@@ -124,6 +134,7 @@ class maps:
     #############################################
     # # # # # # Low level Map Drawing # # # # # # 
     #############################################
+    #create a new google map
     def drawmap(self, f):
         f.write('\t\tvar centerlatlng = new google.maps.LatLng(%f, %f);\n' % (self.center[0],self.center[1]))
         f.write('\t\tvar myOptions = {\n')
@@ -147,7 +158,8 @@ class maps:
         f.write('\t\t});\n')
         f.write('\t\tmarker.setMap(map);\n')
         f.write('\n')
-        
+    
+    # draw a simple polyline, a linear overlay of connected line segments, using coordinates stored in the path, 
     def drawPolyline(self,f,path,\
             clickable = False, \
             geodesic = True,\
@@ -181,7 +193,8 @@ class maps:
         f.write('Path.setMap(map);\n')
         f.write('\n\n')
 
-    def drawPolygon(self,f,path,\
+     # draw a simple polygon using coordinates stored in the path
+     def drawPolygon(self,f,path,\
             clickable = False, \
             geodesic = True,\
             fillColor = "#000000",\
